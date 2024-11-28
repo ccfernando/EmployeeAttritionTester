@@ -7,10 +7,10 @@ app = Flask(__name__)
 
 
 model = xgb.Booster()
-model.load_model('model/employee_attrition_model.json')
+model.load_model('model/xgboost/employee_attrition_model.json')
 
 # Load the scaler
-scaler = joblib.load('model/scaler.pkl')
+scaler = joblib.load('model/xgboost/scaler.pkl')
 
 @app.route('/')
 def home():

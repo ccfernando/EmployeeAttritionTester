@@ -152,10 +152,7 @@
               <input type="number" name="PerformanceRating" id="PerformanceRating" value="4" required>
               <label for="PerformanceRating">Performance Rating </label>
             </div>
-            <div class="col s12 m4 input-field">
-              <input type="number" name="StandardHours" id="StandardHours" value="80" required>
-              <label for="StandardHours">Standard Hours</label>
-            </div>
+
             <div class="col s12 m4 input-field">
               <input type="number" name="TrainingTimesLastYear" id="TrainingTimesLastYear" value="3" required>
               <label for="TrainingTimesLastYear">Training Times Last Year</label>
@@ -252,12 +249,12 @@
               <label for="EducationField_Medical">Education Field (Medical)</label>
             </div>
             <div class="col s12 m3 input-field">
-              <select name="EducationField_Technical_Degree" id="EducationField_Technical_Degree" required>
+              <select name="EducationField_Technical Degree" id="EducationField_Technical Degree" required>
                 <option value="" disabled selected>Choose Option</option>
                 <option value="1">Yes</option>
                 <option value="0" selected>No</option>
               </select>
-              <label for="EducationField_Technical_Degree">Education Field (Technical Degree)</label>
+              <label for="EducationField_Technical Degree">Education Field (Technical Degree)</label>
             </div>
             <div class="col s12 m3 input-field">
               <select name="EducationField_Other" id="EducationField_Other" required>
@@ -276,20 +273,20 @@
               <label for="Gender_Male">Gender (Male - 1, Female - 0)</label>
             </div>
             <div class="col s12 m3 input-field">
-              <select name="JobRole_Human_Resources" id="JobRole_Human_Resources" required>
+              <select name="JobRole_Human Resources" id="JobRole_Human Resources" required>
                 <option value="" disabled selected>Choose Option</option>
                 <option value="1" >Yes</option>
                 <option value="0"selected>No</option>
               </select>
-              <label for="JobRole_Human_Resources">Job Role (Human Resources)</label>
+              <label for="JobRole_Human Resources">Job Role (Human Resources)</label>
             </div>
             <div class="col s12 m3 input-field">
-              <select name="JobRole_Laboratory_Technician" id="JobRole_Laboratory_Technician" required>
+              <select name="JobRole_Laboratory Technician" id="JobRole_Laboratory Technician" required>
                 <option value="" disabled selected>Choose Option</option>
                 <option value="1">Yes</option>
                 <option value="0" selected>No</option>
               </select>
-              <label for="JobRole_Laboratory_Technician">Job Role (Laboratory Technician)</label>
+              <label for="JobRole_Laboratory Technician">Job Role (Laboratory Technician)</label>
             </div>
             <div class="col s12 m3 input-field">
               <select name="JobRole_Manager" id="JobRole_Manager" required>
@@ -300,44 +297,44 @@
               <label for="JobRole_Manager">Job Role (Manager)</label>
             </div>
             <div class="col s12 m3 input-field">
-              <select name="JobRole_Manufacturing_Director" id="JobRole_Manufacturing_Director" required>
+              <select name="JobRole_Manufacturing Director" id="JobRole_Manufacturing Director" required>
                 <option value="" disabled selected>Choose Option</option>
                 <option value="1" >Yes</option>
                 <option value="0" selected>No</option>
               </select>
-              <label for="JobRole_Manufacturing_Director">Job Role (Manufacturing Director)</label>
+              <label for="JobRole_Manufacturing Director">Job Role (Manufacturing Director)</label>
             </div>
             <div class="col s12 m3 input-field">
-              <select name="JobRole_Research_Director" id="JobRole_Research_Director" required>
+              <select name="JobRole_Research Director" id="JobRole_Research Director" required>
                 <option value="" disabled selected>Choose Option</option>
                 <option value="1">Yes</option>
                 <option value="0" selected>No</option>
               </select>
-              <label for="JobRole_Research_Director">Job Role (Research Director)</label>
+              <label for="JobRole_Research Director">Job Role (Research Director)</label>
             </div>
             <div class="col s12 m3 input-field">
-              <select name="JobRole_Research_Scientist" id="JobRole_Research_Scientist" required>
+              <select name="JobRole_Research Scientist" id="JobRole_Research Scientist" required>
                 <option value="" disabled selected>Choose Option</option>
                 <option value="1" selected>Yes</option>
                 <option value="0">No</option>
               </select>
-              <label for="JobRole_Research_Scientist">Job Role (Research Scientist)</label>
+              <label for="JobRole_Research Scientist">Job Role (Research Scientist)</label>
             </div>
             <div class="col s12 m3 input-field">
-              <select name="JobRole_Sales_Executive" id="JobRole_Sales_Executive" required>
+              <select name="JobRole_Sales Executive" id="JobRole_Sales Executive" required>
                 <option value="" disabled selected>Choose Option</option>
                 <option value="1">Yes</option>
                 <option value="0" selected>No</option>
               </select>
-              <label for="JobRole_Sales_Executive">Job Role (Sales Executive)</label>
+              <label for="JobRole_Sales Executive">Job Role (Sales Executive)</label>
             </div>
             <div class="col s12 m3 input-field">
-              <select name="JobRole_Sales_Representative" id="JobRole_Sales_Representative" required>
+              <select name="JobRole_Sales Representative" id="JobRole_Sales Representative" required>
                 <option value="" disabled selected>Choose Option</option>
                 <option value="1">Yes</option>
                 <option value="0" selected>No</option>
               </select>
-              <label for="JobRole_Sales_Representative">Job Role (Sales Representative)</label>
+              <label for="JobRole_Sales Representative">Job Role (Sales Representative)</label>
             </div>
             <div class="col s12 m3 input-field">
               <select name="MaritalStatus_Married" id="MaritalStatus_Married" required>
@@ -364,21 +361,20 @@
               <label for="OverTime_Yes">OverTime</label>
             </div>
 
-              <div class="col s12 m4 input-field">
-                <input type="number" name="EmployeeCount" id="EmployeeCount" value="1" required>
-                <label for="EmployeeCount">Employee Count</label>
-              </div>
 
-              <div class="col s12 m4 input-field">
-                <input type="number" name="EmployeeNumber" id="EmployeeNumber" value="1" required>
-                <label for="EmployeeNumber">Employee Number</label>
-              </div>
+
           </div>
           <!-- Submit Button -->
           <div class="center-align" style="margin-top: 2rem;">
             <button type="submit" class="btn waves-effect waves-light"> Predict Attrition </button>
           </div>
         </form>
+
+       {% if prediction_text %}
+            <div class="result">
+                <p>{{ prediction_text }}</p>
+            </div>
+        {% endif %}
       </div>
     </div>
     <!-- Materialize JS CDN -->
