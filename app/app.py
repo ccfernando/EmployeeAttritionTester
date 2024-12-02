@@ -2,6 +2,7 @@ import xgboost as xgb
 import joblib
 import pandas as pd
 from flask import Flask, request, jsonify, render_template
+from waitress import serve
 
 app = Flask(__name__)
 
@@ -134,5 +135,7 @@ def predict():
         return jsonify({'error': str(e)})
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+    port = 5000
+    print(f"Server is running on http://127.0.0.1:{port}")
+    serve(app, host="0.0.0.0", port=port)
