@@ -24,12 +24,15 @@ expected_columns = [
     'EducationField_Marketing', 'EducationField_Medical', 'EducationField_Other', 'EducationField_Technical Degree',
     'Gender_Male', 'JobRole_Human Resources', 'JobRole_Laboratory Technician', 'JobRole_Manager',
     'JobRole_Manufacturing Director', 'JobRole_Research Director', 'JobRole_Research Scientist',
-    'JobRole_Sales Executive', 'JobRole_Sales Representative', 'MaritalStatus_Married', 'MaritalStatus_Single', 'OverTime_Yes'
+    'JobRole_Sales Executive', 'JobRole_Sales Representative', 'MaritalStatus_Married', 'MaritalStatus_Single',
+    'OverTime_Yes'
 ]
+
 
 @app.route('/')
 def home():
     return render_template('index.html')  # Make sure index.html is in the 'templates' folder
+
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -37,51 +40,99 @@ def predict():
         # Get form data from the request
         form_data = request.form.to_dict()
 
-        # Convert form values to correct data types (integers for most columns)
-        for key in form_data:
-            if key in ['BusinessTravel_Travel_Frequently', 'BusinessTravel_Travel_Rarely',
-                       'Department_Research & Development', 'Department_Sales',
-                       'EducationField_Life Sciences', 'EducationField_Marketing',
-                       'EducationField_Medical', 'EducationField_Other', 'EducationField_Technical Degree',
-                       'Gender_Male', 'JobRole_Human Resources', 'JobRole_Laboratory Technician',
-                       'JobRole_Manager', 'JobRole_Manufacturing Director', 'JobRole_Research Director',
-                       'JobRole_Research Scientist', 'JobRole_Sales Executive', 'JobRole_Sales Representative',
-                       'MaritalStatus_Married', 'MaritalStatus_Single', 'OverTime_Yes']:
-                form_data[key] = int(form_data[key])  # Convert boolean-like fields to integer (0 or 1)
-            else:
-                form_data[key] = int(form_data[key])  # Convert to int for other columns (e.g., Age, MonthlyIncome)
+        # Define all possible job roles
+        job_roles = [
+            'JobRole_Human Resources',
+            'JobRole_Laboratory Technician',
+            'JobRole_Manager',
+            'JobRole_Manufacturing Director',
+            'JobRole_Research Director',
+            'JobRole_Research Scientist',
+            'JobRole_Sales Executive',
+            'JobRole_Sales Representative'
+        ]
 
-        # Ensure the form data has all the expected columns, add missing ones if any
+        # Handle education fields
+        education_fields = [
+            'EducationField_Life Sciences',
+            'EducationField_Marketing',
+            'EducationField_Medical',
+            'EducationField_Technical Degree',
+            'EducationField_Other'
+        ]
+
+        # Handle marital status fields
+        marital_status_fields = [
+            'MaritalStatus_Married',
+            'MaritalStatus_Single'
+        ]
+
+        # Handle department fields
+        department_fields = [
+            'Department_Research & Development',
+            'Department_Sales'
+        ]
+
+        # Handle travel frequency
+        travel_frequency_fields = [
+            'BusinessTravel_Travel_Frequently',
+            'BusinessTravel_Travel_Rarely'
+        ]
+
+        # Initialize to 0
+        for field in job_roles + education_fields + marital_status_fields + department_fields + travel_frequency_fields:
+            form_data[field] = 0
+
+        selected_fields = [
+            ('JobRole', job_roles),
+            ('EducationField', education_fields),
+            ('MaritalStatus', marital_status_fields),
+            ('Department', department_fields),
+            ('Business_Travels', travel_frequency_fields)
+        ]
+
+        for field_key, field_list in selected_fields:
+            selected_value = form_data.get(field_key)
+            if selected_value in field_list:
+                form_data[selected_value] = 1
+
+        for key in ['JobRole', 'EducationField', 'MaritalStatus', 'Department', 'Business_Travels']:
+            form_data.pop(key, None)
+
+        # Convert form values to integers where necessary
+        for key in form_data:
+            form_data[key] = int(form_data[key]) if form_data[key] in ['0', '1'] else form_data[key]
+
+        # Print the form_data to debug and see the output
+        for key, value in form_data.items():
+            print(f"{key}: {value}")
+
+        # Ensure the form data has all the expected columns and add missing ones with default value of 0
         missing_cols = set(expected_columns) - set(form_data.keys())
         for col in missing_cols:
-            form_data[col] = 0  # Assign a default value of 0 for missing columns (if needed)
+            form_data[col] = 0  # Default value for missing columns
 
-        # Convert form data to DataFrame (since model expects DataFrame)
+        # Convert form data to DataFrame
         input_df = pd.DataFrame([form_data])
 
-        # Ensure the columns are in the correct order
-        input_df = input_df[expected_columns]  # Reorder columns to match the training dataset
+        # Reorder columns to match the training dataset order
+        input_df = input_df[expected_columns]
 
-        # Scale the features using the loaded scaler
+        # Scale and predict
         input_scaled = scaler.transform(input_df)
-
-        # Convert the scaled input to DMatrix for XGBoost
         input_dmatrix = xgb.DMatrix(input_scaled)
+        prediction = model.predict(input_dmatrix)
+        probability = prediction[0]
 
-        # Make prediction using the loaded model
-        prediction = model.predict(input_dmatrix)  # Get model's predicted probabilities (for binary classification)
-        probability = prediction[0]  # Assuming it returns an array-like object, get the probability
+        # Map result to 'Yes' or 'No'
+        result = "Yes" if probability >= 0.5 else "No"
+        confidence = probability * 100
 
-        print("Probability of leaving:", probability*100 )
-        # Map prediction to readable output
-        result = "Yes" if probability >= 0.5 else "No"  # If probability >= 0.5, classify as 'Yes'
-        confidence = probability * 100  # Confidence in percentage
-
-        # Return the prediction and confidence on the results page
         return render_template('results.html', prediction=result, confidence=confidence)
 
     except Exception as e:
         return jsonify({'error': str(e)})
+
 
 if __name__ == '__main__':
     app.run(debug=True)

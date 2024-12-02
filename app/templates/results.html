@@ -52,9 +52,9 @@
 </head>
 <body>
     <div class="result-container">
-        <h1>Attrition Prediction</h1>
+        <h1>Result</h1>
+        <div class="confidence"><strong>Probability of Attrition:</strong> {{ "%.2f" | format(confidence) }}%</div>
         <div class="result"><strong>Prediction:</strong> {{ prediction }}</div>
-        <div class="confidence"><strong>Confidence:</strong> {{ "%.2f" | format(confidence) }}%</div>
         <!-- Back Button -->
         <button class="back-button" onclick="goBack()">Back</button>
     </div>
