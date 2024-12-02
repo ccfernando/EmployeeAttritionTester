@@ -80,7 +80,7 @@
         <h3 class="center-align indigo-text text-darken-3">Employee Attrition Prediction</h3>
         <form id="predictionForm" method="POST" action="http://127.0.0.1:5000/predict">
           <!-- Group 1 -->
-          <div class="section-label">Employee Demographics</div>
+          <div class="section-label">Employee Demographic</div>
           <div class="visible-br"></div>
           <div class="row">
             <div class="col s12 m4 input-field ">
@@ -119,6 +119,30 @@
               <input type="number" name="DistanceFromHome" id="DistanceFromHome" value="8" required>
               <label for="DistanceFromHome">Distance from Home</label>
             </div>
+            <div class="col s12 m3 input-field">
+              <select name="Gender_Male" id="Gender_Male" required>
+                <option value="" disabled selected>Choose Option</option>
+                <option value="1">1</option>
+                <option value="0" selected>0</option>
+              </select>
+              <label for="Gender_Male">Gender (Male - 1, Female - 0)</label>
+            </div>
+            <div class="col s12 m3 input-field">
+              <select name="MaritalStatus_Married" id="MaritalStatus_Married" required>
+                <option value="" disabled selected>Choose Option</option>
+                <option value="1" selected>Yes</option>
+                <option value="0" >No</option>
+              </select>
+              <label for="MaritalStatus_Married">Marital Status (Married)</label>
+            </div>
+            <div class="col s12 m3 input-field">
+              <select name="MaritalStatus_Single" id="MaritalStatus_Single" required>
+                <option value="" disabled selected>Choose Option</option>
+                <option value="1">Yes</option>
+                <option value="0" selected>No</option>
+              </select>
+              <label for="MaritalStatus_Single">Marital Status (Single)</label>
+            </div>
           </div>
           <!-- Group 2 -->
           <div class="section-label">Job Performance and Satisfaction</div>
@@ -156,6 +180,14 @@
             <div class="col s12 m4 input-field">
               <input type="number" name="TrainingTimesLastYear" id="TrainingTimesLastYear" value="3" required>
               <label for="TrainingTimesLastYear">Training Times Last Year</label>
+            </div>
+                        <div class="col s12 m3 input-field">
+              <select name="OverTime_Yes" id="OverTime_Yes" required>
+                <option value="" disabled selected>Choose Option</option>
+                <option value="1">Yes</option>
+                <option value="0" selected>No</option>
+              </select>
+              <label for="OverTime_Yes">OverTime</label>
             </div>
           </div>
           <!-- Group 3 -->
@@ -264,14 +296,7 @@
               </select>
               <label for="EducationField_Other">Education Field (Other)</label>
             </div>
-            <div class="col s12 m3 input-field">
-              <select name="Gender_Male" id="Gender_Male" required>
-                <option value="" disabled selected>Choose Option</option>
-                <option value="1">1</option>
-                <option value="0" selected>0</option>
-              </select>
-              <label for="Gender_Male">Gender (Male - 1, Female - 0)</label>
-            </div>
+
             <div class="col s12 m3 input-field">
               <select name="JobRole_Human Resources" id="JobRole_Human Resources" required>
                 <option value="" disabled selected>Choose Option</option>
@@ -336,30 +361,8 @@
               </select>
               <label for="JobRole_Sales Representative">Job Role (Sales Representative)</label>
             </div>
-            <div class="col s12 m3 input-field">
-              <select name="MaritalStatus_Married" id="MaritalStatus_Married" required>
-                <option value="" disabled selected>Choose Option</option>
-                <option value="1" selected>Yes</option>
-                <option value="0" >No</option>
-              </select>
-              <label for="MaritalStatus_Married">Marital Status (Married)</label>
-            </div>
-            <div class="col s12 m3 input-field">
-              <select name="MaritalStatus_Single" id="MaritalStatus_Single" required>
-                <option value="" disabled selected>Choose Option</option>
-                <option value="1">Yes</option>
-                <option value="0" selected>No</option>
-              </select>
-              <label for="MaritalStatus_Single">Marital Status (Single)</label>
-            </div>
-            <div class="col s12 m3 input-field">
-              <select name="OverTime_Yes" id="OverTime_Yes" required>
-                <option value="" disabled selected>Choose Option</option>
-                <option value="1">Yes</option>
-                <option value="0" selected>No</option>
-              </select>
-              <label for="OverTime_Yes">OverTime</label>
-            </div>
+
+
 
 
 

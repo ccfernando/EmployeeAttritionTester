@@ -5,12 +5,27 @@ from flask import Flask, request, jsonify, render_template
 
 app = Flask(__name__)
 
-
+# Load the pre-trained model
 model = xgb.Booster()
 model.load_model('model/xgboost/employee_attrition_model.json')
 
 # Load the scaler
 scaler = joblib.load('model/xgboost/scaler.pkl')
+
+# Ensure the same feature columns used in training
+expected_columns = [
+    'Age', 'DailyRate', 'DistanceFromHome', 'Education', 'EnvironmentSatisfaction',
+    'HourlyRate', 'JobInvolvement', 'JobLevel', 'JobSatisfaction', 'MonthlyIncome',
+    'MonthlyRate', 'NumCompaniesWorked', 'PercentSalaryHike', 'PerformanceRating',
+    'RelationshipSatisfaction', 'StockOptionLevel', 'TotalWorkingYears', 'TrainingTimesLastYear',
+    'WorkLifeBalance', 'YearsAtCompany', 'YearsInCurrentRole', 'YearsSinceLastPromotion',
+    'YearsWithCurrManager', 'BusinessTravel_Travel_Frequently', 'BusinessTravel_Travel_Rarely',
+    'Department_Research & Development', 'Department_Sales', 'EducationField_Life Sciences',
+    'EducationField_Marketing', 'EducationField_Medical', 'EducationField_Other', 'EducationField_Technical Degree',
+    'Gender_Male', 'JobRole_Human Resources', 'JobRole_Laboratory Technician', 'JobRole_Manager',
+    'JobRole_Manufacturing Director', 'JobRole_Research Director', 'JobRole_Research Scientist',
+    'JobRole_Sales Executive', 'JobRole_Sales Representative', 'MaritalStatus_Married', 'MaritalStatus_Single', 'OverTime_Yes'
+]
 
 @app.route('/')
 def home():
@@ -24,8 +39,9 @@ def predict():
 
         # Convert form values to correct data types (integers for most columns)
         for key in form_data:
-            if key in ['BusinessTravel_Travel_Frequently', 'BusinessTravel_Travel_Rarely', 'Department_Research & Development',
-                       'Department_Sales', 'EducationField_Life Sciences', 'EducationField_Marketing',
+            if key in ['BusinessTravel_Travel_Frequently', 'BusinessTravel_Travel_Rarely',
+                       'Department_Research & Development', 'Department_Sales',
+                       'EducationField_Life Sciences', 'EducationField_Marketing',
                        'EducationField_Medical', 'EducationField_Other', 'EducationField_Technical Degree',
                        'Gender_Male', 'JobRole_Human Resources', 'JobRole_Laboratory Technician',
                        'JobRole_Manager', 'JobRole_Manufacturing Director', 'JobRole_Research Director',
@@ -35,8 +51,16 @@ def predict():
             else:
                 form_data[key] = int(form_data[key])  # Convert to int for other columns (e.g., Age, MonthlyIncome)
 
+        # Ensure the form data has all the expected columns, add missing ones if any
+        missing_cols = set(expected_columns) - set(form_data.keys())
+        for col in missing_cols:
+            form_data[col] = 0  # Assign a default value of 0 for missing columns (if needed)
+
         # Convert form data to DataFrame (since model expects DataFrame)
         input_df = pd.DataFrame([form_data])
+
+        # Ensure the columns are in the correct order
+        input_df = input_df[expected_columns]  # Reorder columns to match the training dataset
 
         # Scale the features using the loaded scaler
         input_scaled = scaler.transform(input_df)
@@ -48,18 +72,13 @@ def predict():
         prediction = model.predict(input_dmatrix)  # Get model's predicted probabilities (for binary classification)
         probability = prediction[0]  # Assuming it returns an array-like object, get the probability
 
+        print("Probability of leaving:", probability*100 )
         # Map prediction to readable output
         result = "Yes" if probability >= 0.5 else "No"  # If probability >= 0.5, classify as 'Yes'
         confidence = probability * 100  # Confidence in percentage
 
-        # Return JSON response with the prediction result and confidence percentage
-        # return jsonify({
-        #     'Attrition Prediction': result,
-        #     'Confidence Percentage': f"{confidence:.2f}%",  # Format the confidence to two decimal places,
-        #
-        # })
-
-        return render_template('results.html',prediction=result,confidence=confidence)
+        # Return the prediction and confidence on the results page
+        return render_template('results.html', prediction=result, confidence=confidence)
 
     except Exception as e:
         return jsonify({'error': str(e)})
