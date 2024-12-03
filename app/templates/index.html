@@ -9,7 +9,7 @@
     <!-- Custom Styles -->
     <style>
       body {
-        background-color: #6A11CB;
+        background-color: #6C6DD8;
         padding: 2rem;
       }
 
@@ -32,13 +32,18 @@
       }
 
       .btn {
-        background: linear-gradient(135deg, #2575FC, #6A11CB);
+        background: linear-gradient(135deg, #6C6DD8, #6A11CB);
+      }
+
+      .light-pink-text {
+        color: #ec8484;
+        /* Example light pink color */
       }
 
       .section-label {
         font-weight: bold;
         font-size: 1.2rem;
-        color: #6A11CB;
+        color: #6C6DD8;
         margin: 5rem 0 0rem;
         text-transform: uppercase;
         text-align: left;
@@ -49,6 +54,22 @@
         /* Enhanced spacing between fields */
       }
 
+      /* label focus color */
+      .input-field input:focus+label {
+        color: #e88684 !important;
+      }
+
+      /* label underline focus color */
+      .row .input-field input:focus {
+        border-bottom: 1px solid #e88684 !important;
+        box-shadow: 0 1px 0 0 #e88684 !important
+      }
+
+      ul.dropdown-content.select-dropdown li:not(.disabled) span {
+        color: #ec8484;
+        /* no need for !important */
+      }
+
       label {
         text-align: left;
         display: block;
@@ -56,17 +77,11 @@
 
       .visible-br {
         display: block;
-        /* Acts like a line break */
         height: 2px;
-        /* Thickness of the line */
-        background: linear-gradient(to right, #6A11CB, #2575FC);
-        /* Gradient effect */
+        background: linear-gradient(to right, #6C6DD8, #2575FC);
         margin: 2px 0 2rem;
-        /* Space above and below */
         border-radius: 2px;
-        /* Rounded edges */
         animation: fadeIn 1s ease-in-out;
-        /* Smooth fade-in effect */
       }
     </style>
   </head>
@@ -75,9 +90,9 @@
       <div class="card-panel white z-depth-4">
         <!-- Employee Icon -->
         <div class="center-align">
-          <img src="https://img.icons8.com/?size=100&id=7819&format=png&color=6A11CB" alt="Employee Icon" class="employee-icon circle responsive-img">
+          <img src="https://img.icons8.com/?size=300&id=7819&format=png&color=ec8484" alt="Employee Icon" class="employee-icon circle responsive-img">
         </div>
-        <h3 class="center-align indigo-text text-darken-3">Employee Attrition Prediction</h3>
+        <h3 class="center-align light-pink-text text-darken-3">Employee Attrition Prediction</h3>
         <form id="predictionForm" method="POST" action="http://10.10.11.18:5000/predict">
           <!-- Group 1 -->
           <div class="section-label">Employee Demographic</div>
@@ -261,9 +276,7 @@
           <div class="center-align" style="margin-top: 2rem;">
             <button type="submit" class="btn waves-effect waves-light"> Predict Attrition </button>
           </div>
-        </form> {% if prediction_text %} <div class="result">
-          <p>{{ prediction_text }}</p>
-        </div> {% endif %}
+        </form>
       </div>
     </div>
     <!-- Materialize JS CDN -->
